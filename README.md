@@ -1,59 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap 5">
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/Chart.js-4-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Chart.js">
 </p>
 
-## About Laravel
+# 🏢 HR Dashboard
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Sistem Manajemen Sumber Daya Manusia (HRM)** berbasis web yang dirancang untuk mengelola data karyawan, absensi harian, pengajuan cuti, dan penggajian dasar secara efisien dan aman.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Dibangun menggunakan **Laravel 12**, **Bootstrap 5**, dan **PostgreSQL** dengan arsitektur *Role-Based Access Control* yang memisahkan panel **HR Admin** dan **Employee** secara ketat.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✨ Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 🔐 Autentikasi & Keamanan
+- Login dengan role-based redirect (HR → Panel Admin, Employee → Portal Karyawan)
+- Role Middleware untuk proteksi akses antar panel
+- Password terenkripsi menggunakan Bcrypt
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 👨‍💼 Panel HR Admin
+| Modul | Fitur |
+|-------|-------|
+| **Dashboard** | 6 kartu statistik real-time, 4 grafik interaktif (Chart.js) |
+| **Master Departemen** | CRUD dengan proteksi Foreign Key |
+| **Master Jabatan** | CRUD dengan validasi kode unik |
+| **Jadwal Kerja** | Konfigurasi jam masuk, pulang, dan toleransi keterlambatan |
+| **Data Karyawan** | Registrasi karyawan + pembuatan akun login otomatis |
+| **Monitoring Absensi** | Rekap harian dengan filter tanggal |
+| **Persetujuan Cuti** | Approval flow dengan pemotongan saldo otomatis + audit trail |
+| **Manajemen Gaji** | Input gaji dengan sistem Draft → Release |
 
-## Laravel Sponsors
+### 👤 Portal Employee
+| Modul | Fitur |
+|-------|-------|
+| **Dashboard** | Status absensi hari ini, saldo cuti, grafik kehadiran bulanan |
+| **Check-In / Check-Out** | Absensi satu-klik dengan deteksi keterlambatan otomatis |
+| **Riwayat Absensi** | Tabel lengkap dengan status, menit terlambat, durasi kerja |
+| **Pengajuan Cuti** | Form pengajuan + riwayat status (Pending/Approved/Rejected) |
+| **Riwayat Gaji** | Slip gaji bulanan (hanya yang sudah di-release HR) |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📊 Dashboard Analytics
+- **Tren Kehadiran** — Stacked bar chart (7 hari terakhir)
+- **Distribusi Departemen** — Doughnut chart
+- **Status Cuti** — Doughnut chart (Pending/Approved/Rejected)
+- **Pengeluaran Gaji** — Bar chart (6 bulan terakhir)
+- **Grafik Kehadiran Employee** — Bar + Line chart dengan pemilih periode (3/6/12 bulan)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🗃️ Database Schema
 
-## Contributing
+```
+users ─────────────┐
+                    │ 1:1
+departments ───┐    ▼
+positions ─────┤  employees ──┬── attendances
+work_schedules ┘    │         ├── leave_requests ── leave_histories
+                    │         ├── leave_balances ──┘
+                    │         └── salaries
+                    │
+                    └── (FK: department_id, position_id, schedule_id)
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**10 tabel utama** dengan Foreign Key constraints, unique indexes, dan cascade/restrict rules yang ketat.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Instalasi & Setup
 
-## Security Vulnerabilities
+### Prasyarat
+- PHP ≥ 8.2
+- Composer
+- Node.js ≥ 18 & npm
+- PostgreSQL ≥ 14
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Langkah Instalasi
 
-## License
+```bash
+# 1. Clone repository
+git clone https://github.com/MIKELIZER/hr-dashboard.git
+cd hr-dashboard
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 2. Install dependensi PHP
+composer install
+
+# 3. Install dependensi frontend
+npm install
+
+# 4. Salin file environment
+cp .env.example .env
+
+# 5. Generate application key
+php artisan key:generate
+
+# 6. Konfigurasi database di file .env
+#    Ubah bagian berikut sesuai pengaturan PostgreSQL Anda:
+#    DB_CONNECTION=pgsql
+#    DB_HOST=127.0.0.1
+#    DB_PORT=5432
+#    DB_DATABASE=hr_dashboard
+#    DB_USERNAME=postgres
+#    DB_PASSWORD=your_password
+
+# 7. Buat database PostgreSQL
+#    Jalankan di psql: CREATE DATABASE hr_dashboard;
+
+# 8. Jalankan migrasi & seeder
+php artisan migrate:fresh --seed
+
+# 9. Build assets frontend
+npm run build
+
+# 10. Jalankan server lokal
+php artisan serve
+```
+
+Buka **http://127.0.0.1:8000** di browser Anda.
+
+---
+
+## 🔑 Akun Demo
+
+| Role | Email | Password |
+|------|-------|----------|
+| **HR Admin** | `admin@hr.com` | `password` |
+| Employee | `budi@company.com` | `password` |
+| Employee | `siti@company.com` | `password` |
+| Employee | `ahmad@company.com` | `password` |
+| Employee | `dewi@company.com` | `password` |
+
+> Total 15 akun employee tersedia. Semua menggunakan password: `password`
+
+---
+
+## 🏗️ Arsitektur Proyek
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── HR/                    # Panel HR Admin
+│   │   │   ├── DashboardController
+│   │   │   ├── DepartmentController
+│   │   │   ├── PositionController
+│   │   │   ├── WorkScheduleController
+│   │   │   ├── EmployeeController
+│   │   │   ├── AttendanceController
+│   │   │   ├── LeaveRequestController
+│   │   │   └── SalaryController
+│   │   └── Employee/              # Portal Employee
+│   │       ├── DashboardController
+│   │       ├── AttendanceController
+│   │       ├── LeaveRequestController
+│   │       └── SalaryController
+│   └── Middleware/
+│       └── RoleMiddleware          # Proteksi akses berbasis role
+├── Models/                         # 10 Eloquent Models
+resources/
+├── css/app.css                     # Custom theme (CSS variables, animations)
+├── views/
+│   ├── layouts/                    # HR sidebar & Employee navbar
+│   ├── auth/                       # Login page
+│   ├── hr/                         # 16 views HR Admin
+│   └── employee/                   # 7 views Employee
+```
+
+---
+
+## 🛡️ Business Rules
+
+| Rule | Implementasi |
+|------|-------------|
+| Akses panel sesuai role | `RoleMiddleware` memblokir akses silang |
+| Satu absensi per hari | Constraint `UNIQUE(employee_id, attendance_date)` |
+| Deteksi keterlambatan | Otomatis berdasarkan `work_schedules.start_time + late_tolerance` |
+| Pemotongan cuti saat approve | `DB::transaction()` → update status + potong saldo + catat history |
+| Gaji Draft → Release | Gaji yang sudah di-release tidak bisa diedit/dihapus |
+| Total gaji otomatis | Model Observer: `total_salary = base + allowance - deduction` |
+| Employee hanya lihat gajinya | Query filter `employee_id` + status `released` |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Teknologi |
+|-------|-----------|
+| **Backend** | Laravel 12 (PHP 8.2+) |
+| **Frontend** | Bootstrap 5.3 + Bootstrap Icons |
+| **Database** | PostgreSQL 16 |
+| **Charting** | Chart.js 4 |
+| **Build Tool** | Vite |
+| **Auth** | Laravel Breeze (authentication only) |
+| **Font** | Inter (Google Fonts) |
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dibuat untuk keperluan akademik mata kuliah **Basis Data 2**.
+
+---
+
+<p align="center">
+  Built with ❤️ using Laravel 12
+</p>
