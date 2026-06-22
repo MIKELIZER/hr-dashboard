@@ -1,0 +1,47 @@
+databases:
+  - name: hr-dashboard-db
+    databaseName: hrdashboard
+    user: hruser
+    plan: free
+    region: singapore # Opsional: Lebih dekat ke Indonesia
+
+services:
+  - type: web
+    name: hr-dashboard
+    env: php
+    plan: free
+    region: singapore
+    buildCommand: "bash .render-build.sh"
+    envVars:
+      - key: APP_NAME
+        value: "HR Dashboard"
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: "base64:06F/LOrYnKs3kvwKeynh55Nyglzo/nxDMcg/Gnxq1n8="
+      - key: APP_DEBUG
+        value: false
+      - key: DOCUMENT_ROOT
+        value: public
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: hr-dashboard-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: hr-dashboard-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: hr-dashboard-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: hr-dashboard-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: hr-dashboard-db
+          property: password
